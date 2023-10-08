@@ -24,20 +24,22 @@
 
 class User {
   final int id;
-  final String displayname, url;
+  final String displayname, url, login;
   final bool active;
 
-  User({required this.id, required this.displayname, required this.url, required this.active});
+  User({required this.id, required this.displayname, required this.url, required this.login, required this.active});
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"] as int,
     displayname: json["displayname"] as String,
     url: json["url"] as String,
+    login: json["login"] as String,
     active: json["active?"] as bool,
   );
   Map<String, dynamic> toJson() => {
     'id': id,
     'displayname': displayname,
     'url': url,
+    'login': login,
     'active': active,
   };
 }
