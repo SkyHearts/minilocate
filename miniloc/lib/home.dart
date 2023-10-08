@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'dart:convert'; //DecodeJson
 import 'dart:async'; //Timer
 import 'package:flutter/material.dart';
-import 'package:miniloc/userdetails.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
-import 'activeuser.dart';
+import 'package:miniloc/userdetails.dart';
+import 'package:miniloc/activeuser.dart';
+// import 'package:miniloc/image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,8 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           final user = activeUsers[index];
           final name = user.user.displayname;
-          // final login = user.user.login; //attempt fetching username (failed)
-          final id = user.id;
+          final login = user.user.login; //attempt fetching username (failed)
+          // final id = user.id;
+          final imageUrl = user.user.image.ver.small;
           return ListTile(
             onTap: (){
               Navigator.push(context,
@@ -37,9 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 context) => UserDetails(activeUsers: activeUsers[index]),
                 ));
             },
+            leading: CircleAvatar(
+              // borderRadius: BorderRadius.circular(100),
+              radius: 35,
+              backgroundImage: NetworkImage(imageUrl),
+            ),
             title: Text(name),
-            // subtitle: Text(login), //attempt fetching username (failed)
-            subtitle: Text('ID: ${id.toString()}'),
+            subtitle: Text(login), //attempt fetching username (failed)
+            // subtitle: Text('ID: ${id.toString()}'),
           );
         },
       ),
@@ -50,21 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         }
-
-  //     floatingActionButton: FloatingActionButton(
-  //       onPressed: () => {
-  //         fetchAccessToken(),
-  //         Timer(Duration(seconds: 2), ()){
-  //         setState(() {
-  //         // This call to setState tells the Flutter framework that something has
-  //         // changed in this State, which causes it to rerun the build method below
-  //         // so that the display can reflect the updated values.
-  //         })
-  //         };
-  //       }),
-  //   );
-  // }
-// }
 
   List<Active> getActiveUsersFromJson(response) {
     print('Retrieving Current Active Users');
