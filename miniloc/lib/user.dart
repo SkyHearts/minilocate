@@ -1,4 +1,5 @@
 // import 'package:json_annotation/json_annotation.dart';
+import 'image.dart';
 
 // //attempt fetching username (failed)
 // class User {
@@ -26,14 +27,16 @@ class User {
   final int id;
   final String displayname, url, login;
   final bool active;
+  final Images image;
 
-  User({required this.id, required this.displayname, required this.url, required this.login, required this.active});
+  User({required this.id, required this.displayname, required this.url, required this.login, required this.active, required this.image});
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"] as int,
     displayname: json["displayname"] as String,
     url: json["url"] as String,
     login: json["login"] as String,
     active: json["active?"] as bool,
+    image : Images.fromJson(json["image"]),
   );
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -41,6 +44,7 @@ class User {
     'url': url,
     'login': login,
     'active': active,
+    'image': image,
   };
 }
 //   factory User.fromJson(Map<String, dynamic> json) {
