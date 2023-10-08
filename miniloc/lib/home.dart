@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'dart:async'; //Timer
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
+import 'package:miniloc/userdetails.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
           // final login = user.user.login; //attempt fetching username (failed)
           final id = user.id;
           return ListTile(
+            onTap: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (
+                context) => UserDetails(activeUsers: activeUsers[index]),
+                ));
+            },
             title: Text(name),
             // subtitle: Text(login), //attempt fetching username (failed)
             subtitle: Text('ID: ${id.toString()}'),
@@ -37,10 +44,26 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: fetchAccessToken,
-      ),
-    );
-  }
+              onPressed: () => {
+                fetchAccessToken(),
+              },
+            ),
+          );
+        }
+
+  //     floatingActionButton: FloatingActionButton(
+  //       onPressed: () => {
+  //         fetchAccessToken(),
+  //         Timer(Duration(seconds: 2), ()){
+  //         setState(() {
+  //         // This call to setState tells the Flutter framework that something has
+  //         // changed in this State, which causes it to rerun the build method below
+  //         // so that the display can reflect the updated values.
+  //         })
+  //         };
+  //       }),
+  //   );
+  // }
 // }
 
   List<Active> getActiveUsersFromJson(response) {
@@ -76,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await userData.writeAsString(response);
     // List<Active> activeUsers = getActiveUsersFromJson(jsonDecode(response));
     activeUsers = getActiveUsersFromJson(jsonDecode(response));
+    setState(() => {});
     print('Exited getAllUsers');
   }
 
